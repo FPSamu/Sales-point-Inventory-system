@@ -114,9 +114,9 @@ document.getElementById("editProductButton").addEventListener("click", function 
 
         // Collect user input
         const productId = document.getElementById("editProductId").value;
-        const productName = document.getElementById("editproductName").value;
-        const productPrice = document.getElementById("editproductPrice").value;
-        const productQuantity = document.getElementById("editproductQuantity").value;
+        const productName = document.getElementById("editProductName").value;
+        const productPrice = document.getElementById("editProductPrice").value;
+        const productQuantity = document.getElementById("editProductQuantity").value;
 
         e.preventDefault(); // Prevent the default form submission
         // Send data to backend
