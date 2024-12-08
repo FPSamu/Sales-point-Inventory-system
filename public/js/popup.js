@@ -124,9 +124,10 @@ document.getElementById("editProductButton").addEventListener("click", function 
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                productName,
-                productQuantity,
-                productPrice,
+                id,
+                nombre_producto,
+                cantidad,
+                precio,
             }),
         })
         .then((response) => {
