@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Ayalas Inventory System</title>
 </head>
+
 <body>
     <div id="wrapper">
         <nav id="tabs">
@@ -36,43 +38,43 @@
 
             <script>
                 async function fetchData() {
-                  try {
-                    const response = await fetch('/api/script'); 
-                    if (!response.ok) {
-                      console.error(`HTTP error! Status: ${response.status}`);
-                      return;
+                    try {
+                        const response = await fetch('/api/script');
+                        if (!response.ok) {
+                            console.error(`HTTP error! Status: ${response.status}`);
+                            return;
+                        }
+                        const data = await response.json();
+                        console.log(data);
+
+                        const tableBody = document.querySelector('#data-table tbody');
+                        data.forEach(row => {
+                            const tableRow = document.createElement('tr');
+                            const idCell = document.createElement('td');
+                            idCell.textContent = row.id;
+                            tableRow.appendChild(idCell);
+
+                            const nameCell = document.createElement('td');
+                            nameCell.textContent = row.nombre_producto;
+                            tableRow.appendChild(nameCell);
+
+                            const inventoryCell = document.createElement('td');
+                            inventoryCell.textContent = row.cantidad;
+                            tableRow.appendChild(inventoryCell);
+
+                            const priceCell = document.createElement('td');
+                            priceCell.textContent = row.precio;
+                            tableRow.appendChild(priceCell);
+
+                            tableBody.appendChild(tableRow);
+                        });
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
                     }
-                    const data = await response.json();
-                    console.log(data);
-          
-                    const tableBody = document.querySelector('#data-table tbody');
-                    data.forEach(row => {
-                      const tableRow = document.createElement('tr');
-                      const idCell = document.createElement('td');
-                      idCell.textContent = row.id;
-                      tableRow.appendChild(idCell);
-          
-                      const nameCell = document.createElement('td');
-                      nameCell.textContent = row.nombre_producto;
-                      tableRow.appendChild(nameCell);
-          
-                      const inventoryCell = document.createElement('td');
-                      inventoryCell.textContent = row.cantidad;
-                      tableRow.appendChild(inventoryCell);
-          
-                      const priceCell = document.createElement('td');
-                      priceCell.textContent = row.precio;
-                      tableRow.appendChild(priceCell);
-          
-                      tableBody.appendChild(tableRow);
-                    });
-                  } catch (error) {
-                    console.error('Error fetching data:', error);
-                  }
                 }
-          
+
                 fetchData();
-              </script>
+            </script>
 
             <div class="buttons">
                 <div id="addProductButton" class="button">
@@ -98,21 +100,38 @@
                     <h2 id="popupTitle"></h2>
 
                     <form id="addProductForm">
-                        <input type="text" id="productName" name="productName" placeholder="Nombre del producto" required><br><br>
-                    
+                        <input type="text" id="productName" name="productName" placeholder="Nombre del producto"
+                            required><br><br>
+
                         <div>
-                            <input type="number" id="productPrice" name="productPrice" placeholder="Precio" required><br><br>
-                            <input type="number" id="productQuantity" name="productQuantity" placeholder="Cantidad" required><br><br>
+                            <input type="number" id="productPrice" name="productPrice" placeholder="Precio"
+                                required><br><br>
+                            <input type="number" id="productQuantity" name="productQuantity" placeholder="Cantidad"
+                                required><br><br>
                         </div>
-                    
-                        <button type="submit">Añadir</button>
+
+                        <button id="addSubmitButton" type="submit">Añadir</button>
                     </form>
+
+                    <form id="editProductForm" style="display: none;">
+                        <input type="number" id="editProductId" name="editProductId" placeholder="ID" required />
+                        <br /><br />
+                        <input type="text" id="editProductName" name="editProductName" placeholder="Nombre del producto" required />
+                        <br /><br />
+                        <div>
+                            <input type="number" id="editProductPrice" name="editProductPrice" placeholder="Precio" required/>
+                            <br /><br />
+                            <input type="number" id="editProductQuantity" name="editProductQuantity" placeholder="Cantidad" required />
+                            <br /><br />
+                        </div>
+                        <button id="editSubmitButton" type="submit">Editar</button>
+                    </form>
+
                 </div>
             </div>
-
-
         </div>
     </div>
     <script src="js/popup.js" defer></script>
 </body>
+
 </html>

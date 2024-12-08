@@ -130,32 +130,36 @@ h1 {
     cursor: pointer;
 } 
 
-.popup-content #addProductForm {
+.popup-content #addProductForm, .popup-content #editProductForm {
     margin: auto;
     width: 80%;
 }
 
-.popup-content #addProductForm #productName{
+.popup-content #addProductForm #productName, .popup-content #editProductForm #editProductName {
     width: 89%;
     height: 4vh;
 
 }
 
-.popup-content #addProductForm div {
+.popup-content #addProductForm div, .popup-content #editProductForm div {
     display: flex;
     width: 90%;
     margin: auto;
 }
 
-.popup-content #addProductForm div #productPrice {
+.popup-content #addProductForm div #productPrice, .popup-content #editProductForm div #editProductPrice {
     margin-right: 1vw;
 }
 
-.popup-content #addProductForm div #productQuantity{
+.popup-content #addProductForm div #productQuantity, .popup-content #editProductForm div #editProductQuantity {
     margin-left: 1vw;
 }
 
-.popup-content #addProductForm input {
+.popup-content #editProductForm #editProductId {
+    width: 100%;
+}
+
+.popup-content #addProductForm input, .popup-content #editProductForm input {
     width: 100%;
     padding: 0;
     height: 4vh;
@@ -166,11 +170,11 @@ h1 {
     border-radius: 0.5vh;
 }
 
-.popup-content #addProductForm input:focus {
+.popup-content #addProductForm input:focus, .popup-content #editProductForm input:focus {
     outline: none;
 }
 
-.popup-content #addProductForm input::placeholder {
+.popup-content #addProductForm input::placeholder, .popup-content #editProductForm input::placeholder {
     font-weight: 700;
     font-size: 1vw;
     text-align: center;

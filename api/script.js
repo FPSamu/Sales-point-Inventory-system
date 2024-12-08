@@ -35,9 +35,7 @@ export default function handler(req, res) {
 }
 
 const app = express();
-const port = 3000;
 
-// Enable CORS for all origins
 app.use(cors());
 
 app.get('/data', (req, res) => {
@@ -52,9 +50,4 @@ app.get('/data', (req, res) => {
     console.log('Query results:', results); // Log results for debugging
     res.json(results);
   });
-});
-
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
 });
