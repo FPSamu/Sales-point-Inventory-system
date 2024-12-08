@@ -113,11 +113,12 @@ document.getElementById("editProductButton").addEventListener("click", function 
         e.preventDefault();
 
         // Collect user input
-        const id = document.getElementById("editProductId").value;
+        const productId = document.getElementById("editProductId").value;
         const productName = document.getElementById("productName").value;
         const productPrice = document.getElementById("productPrice").value;
         const productQuantity = document.getElementById("productQuantity").value;
 
+        e.preventDefault(); // Prevent the default form submission
         // Send data to backend
         fetch("/api/edit-product", {
             method: "POST",
