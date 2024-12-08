@@ -125,10 +125,10 @@ document.getElementById("editProductButton").addEventListener("click", function 
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                id,
-                nombre_producto: productName,
-                cantidad: productQuantity,
-                precio: productPrice,
+                productId, // Ensure this matches what the backend expects
+                productName,
+                productPrice,
+                productQuantity,
             }),
         })
         .then((response) => {

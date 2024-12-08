@@ -1,5 +1,11 @@
 import mysql from "mysql2";
 
+export const config = {
+    api: {
+        bodyParser: true,
+    },
+};  
+
 export default function handler(req, res) {
     console.log("Request method:", req.method);
 
@@ -10,6 +16,10 @@ export default function handler(req, res) {
             res.status(400).json({ error: "All fields (id, nombre_producto, cantidad, precio) are required" });
             return;
         }
+        console.log(productId);
+        console.log(productName);
+        console.log(productPrice);
+        console.log(productQuantity);
 
         const connection = mysql.createConnection({
             host: process.env.DB_HOST,
