@@ -113,6 +113,7 @@ document.getElementById("editProductButton").addEventListener("click", function 
         e.preventDefault();
 
         // Collect user input
+        const id = document.getElementById("editProductId").value;
         const productName = document.getElementById("productName").value;
         const productPrice = document.getElementById("productPrice").value;
         const productQuantity = document.getElementById("productQuantity").value;
@@ -125,9 +126,9 @@ document.getElementById("editProductButton").addEventListener("click", function 
             },
             body: JSON.stringify({
                 id,
-                nombre_producto,
-                cantidad,
-                precio,
+                productName,
+                productQuantity,
+                productPrice,
             }),
         })
         .then((response) => {
