@@ -39,6 +39,11 @@ nav ul li a {
     color: #434343;
 }
 
+nav ul li :hover{
+    color: #141414;
+    transition: 300ms;
+}
+
 nav ul span {
     margin-left: 1%;
     margin-right: 1%;
