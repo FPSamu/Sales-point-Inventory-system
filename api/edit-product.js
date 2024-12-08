@@ -15,6 +15,7 @@ export default function handler(req, res) {
         const { id, nombre_producto, cantidad, precio } = req.body;
 
         if (!id || !nombre_producto || !cantidad || !precio) {
+            console.error("Validation failed:", { id, nombre_producto, cantidad, precio });
             res.status(400).json({ error: "All fields (id, nombre_producto, cantidad, precio) are required" });
             return;
         }
