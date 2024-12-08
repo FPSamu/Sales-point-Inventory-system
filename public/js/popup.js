@@ -126,9 +126,9 @@ document.getElementById("editProductButton").addEventListener("click", function 
             },
             body: JSON.stringify({
                 id,
-                productName,
-                productQuantity,
-                productPrice,
+                nombre_producto: productName,
+                cantidad: productQuantity,
+                precio: productPrice,
             }),
         })
         .then((response) => {
@@ -140,7 +140,7 @@ document.getElementById("editProductButton").addEventListener("click", function 
         .then((data) => {
             alert("Producto editado con éxito!");
             console.log("Response from server:", data);
-            closePopup(); // Close the popup after successful submission
+            closePopup();
         })
         .catch((error) => {
             console.error("Error editting product:", error);
