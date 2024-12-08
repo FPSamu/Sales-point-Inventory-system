@@ -3,15 +3,13 @@ document.getElementById("addProductButton").addEventListener("click", function (
         "Añadir producto",
         `
         <form id="addProductForm">
-            <label for="productName">Nombre del producto:</label>
-            <input type="text" id="productName" name="productName" placeholder="Escribe el nombre del producto" required><br><br>
-
-            <label for="productPrice">Precio:</label>
-            <input type="number" id="productPrice" name="productPrice" placeholder="Escribe el precio" required><br><br>
-
-            <label for="productQuantity">Cantidad:</label>
-            <input type="number" id="productQuantity" name="productQuantity" placeholder="Escribe la cantidad" required><br><br>
-
+            <input type="text" id="productName" name="productName" placeholder="Nombre del producto" required><br><br>
+        
+            <div>
+                <input type="number" id="productPrice" name="productPrice" placeholder="Precio" required><br><br>
+                <input type="number" id="productQuantity" name="productQuantity" placeholder="Cantidad" required><br><br>
+            </div>
+        
             <button type="submit">Añadir</button>
         </form>
         `
@@ -20,21 +18,44 @@ document.getElementById("addProductButton").addEventListener("click", function (
     // Handle form submission
     document.getElementById("addProductForm").addEventListener("submit", function (e) {
         e.preventDefault();
+
+        // Collect user input
         const productName = document.getElementById("productName").value;
         const productPrice = document.getElementById("productPrice").value;
         const productQuantity = document.getElementById("productQuantity").value;
 
-        alert(`Producto añadido:
-        - Nombre: ${productName}
-        - Precio: ${productPrice}
-        - Cantidad: ${productQuantity}`);
-
-        document.getElementById("popup").style.display = "none";
+        // Send data to backend
+        fetch("/api/script.js", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                productName,
+                productPrice,
+                productQuantity,
+            }),
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to add product");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            alert("Producto añadido con éxito!");
+            console.log("Response from server:", data);
+            closePopup(); // Close the popup after successful submission
+        })
+        .catch((error) => {
+            console.error("Error adding product:", error);
+            alert("Error al añadir el producto. Inténtalo de nuevo.");
+        });
     });
 });
 
 document.getElementById("closeImage").addEventListener("click", function () {
-    document.getElementById("popup").style.display = "none";
+    closePopup();
 });
 
 function showPopup(title, message) {

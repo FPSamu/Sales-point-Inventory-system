@@ -53,6 +53,29 @@ app.get('/data', (req, res) => {
     console.log('Query results:', results); // Log results for debugging
     res.json(results);
   });
+
+  app.post('/add-product', (req, res) => {
+    const { productName, productPrice, productQuantity } = req.body;
+  
+    // Validate the input
+    if (!productName || !productPrice || !productQuantity) {
+      res.status(400).json({ error: 'All fields are required' });
+      return;
+    }
+  
+    const query = 'INSERT INTO inventario (nombre_producto, cantidad, precio) VALUES (?, ?, ?)';
+    const values = [productName, productQuantity, productPrice];
+  
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        console.error('Database insert error:', err);
+        res.status(500).json({ error: 'Failed to add product', details: err.message });
+        return;
+      }
+      res.status(200).json({ message: 'Product added successfully', id: results.insertId });
+    });
+  });
+  
 });
 
 
