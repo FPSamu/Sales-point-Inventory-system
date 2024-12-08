@@ -1,6 +1,8 @@
 import mysql from "mysql2";
 
 export default function handler(req, res) {
+    console.log("Request method:", req.method);
+
     if (req.method === 'POST') {
         const { productId, productName, productPrice, productQuantity } = req.body;
 
