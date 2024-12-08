@@ -37,7 +37,7 @@
             <script>
                 async function fetchData() {
                   try {
-                    const response = await fetch('/api/script');
+                    const response = await fetch('/api/script'); // Use this in production
                     if (!response.ok) {
                       console.error(`HTTP error! Status: ${response.status}`);
                       return;
@@ -73,7 +73,7 @@
           
                 fetchData();
               </script>
-            <script type="module" src="api/script.js"></script>
+            <!-- <script type="module" src="api/script.js"></script> -->
 
             <div class="buttons">
                 <a href="#">
