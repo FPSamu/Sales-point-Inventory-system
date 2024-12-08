@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>Ayalas Inventory System</title>
+</head>
+<body>
+    <div id="wrapper">
+        <nav id="tabs">
+            <ul>
+                <li><a href="">Ventas</a></li>
+                <span>|</span>
+                <li><a href="">Compras</a></li>            
+                <span>|</span>
+                <li><a href="">Inventario</a></li>
+                <span>|</span>
+            </ul>
+        </nav>
+
+        <h1>Inventario</h1>
+
+        <div class="content">
+            <div class="table">
+                <table id="data-table" border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre del producto</th>
+                            <th>Inventario</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <script>
+                    fetch('/data')
+                    .then(response => response.json())
+                    .then(data => {
+                        const tableBody = document.querySelector('#data-table tbody');
+                        data.forEach(row => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `<td>${row.id}</td><td>${row.nombre_producto}</td><td>${row.cantidad}</td><td>${row.precio}</td>`;
+                            tableBody.appendChild(tr);
+                        });
+                    });
+                </script>
+            </div>
+
+            <div class="buttons">
+                <a href="#">
+                    <div class="button">
+                        <img src="images/add.png" alt="Add_image_button">
+                        <p>Añadir producto</p>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="button">
+                        <img src="images/remove.png" alt="Remove_image_button">
+                        <p>Eliminar producto</p>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="button">
+                        <img src="images/edit.png" alt="Edit_image_button">
+                        <p>Editar producto</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

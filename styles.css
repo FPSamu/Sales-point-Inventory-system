@@ -1,0 +1,98 @@
+@font-face {
+    font-family: 'Kantumruy';
+    src: url('fonts/Kantumruy-Regular.ttf') format('woff2'),
+    url('fonts/Kantumruy-Light.ttf') format('woff2'),
+    url('fonts/Kantumruy-Bold.ttf') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+#wrapper {
+    margin: auto;
+    height: 100vh;
+    background-color: #D7D2C7;
+}
+
+nav {
+    padding: 0;
+    background-color: #939393;
+    font-family: 'Kantumruy';
+    font-weight: 700;
+    font-size: 30;
+    box-shadow: 0 1px 10px #141414;
+}
+
+nav ul {
+    margin: 0;
+    padding-left: 1%;
+    list-style: none;
+    display: flex;
+}
+nav ul li a {
+    text-decoration: none;
+    color: #434343;
+}
+
+nav ul span {
+    margin-left: 1%;
+    margin-right: 1%;
+    color: #AEAEAE;
+} 
+
+h1 {
+    margin-top: 2%;
+    text-align: center;
+    font-family: 'Kantumruy';
+    font-weight: 700;
+    font-size: 3vw;
+    margin-bottom: 0;
+}
+
+.content {
+    display: flex;
+    margin: 0 3vw 0 3vw;
+}
+
+.content .table {
+    background-color: #D9D9D9;
+    width: 60vw;
+    height: 75vh;
+    border: 1px black solid;
+}
+
+.content .table table {
+    width: 100%;
+}
+
+.content .buttons {
+    margin: 10vh 0 0 7vw;
+}
+
+.content .buttons .button {
+    margin-top: 7vh;
+    padding: .5vh 1.5vw .5vh .5vw;
+    border-radius: 2vh;
+    background-color: #F3F0CB;
+    height: 8vh;
+    display: flex;
+    box-shadow: 0px 3px 10px #141414;
+}
+
+.content .buttons .button p{
+    margin: auto;
+    margin-left: 1vw;
+}
+
+.content .buttons a{
+    text-decoration: none;
+    color: #141414;
+    font-family: 'Kantumruy';
+    font-weight: 700;
+    font-size: 1.9vw;
+}
