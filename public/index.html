@@ -73,29 +73,46 @@
           
                 fetchData();
               </script>
-            <!-- <script type="module" src="api/script.js"></script> -->
 
             <div class="buttons">
-                <a href="#">
-                    <div class="button">
-                        <img src="images/add.png" alt="Add_image_button">
-                        <p>Añadir producto</p>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="button">
-                        <img src="images/remove.png" alt="Remove_image_button">
-                        <p>Eliminar producto</p>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="button">
-                        <img src="images/edit.png" alt="Edit_image_button">
-                        <p>Editar producto</p>
-                    </div>
-                </a>
+                <div id="addProductButton" class="button">
+                    <img src="images/add.png" alt="Add_image_button">
+                    <p>Añadir producto</p>
+                </div>
+
+                <div id="removeProductButton" class="button">
+                    <img src="images/remove.png" alt="Remove_image_button">
+                    <p>Eliminar producto</p>
+                </div>
+
+                <div id="editProductButton" class="button">
+                    <img src="images/edit.png" alt="Edit_image_button">
+                    <p>Editar producto</p>
+                </div>
             </div>
+
+            <!-- Popup Window -->
+            <div id="popup" class="popup">
+                <div class="popup-content">
+                    <img id="closeImage" src="images/close.png" alt="Close Popup">
+                    <h2 id="popupTitle"></h2>
+
+                    <form id="addProductForm">
+                        <input type="text" id="productName" name="productName" placeholder="Nombre del producto" required><br><br>
+                    
+                        <div>
+                            <input type="number" id="productPrice" name="productPrice" placeholder="Precio" required><br><br>
+                            <input type="number" id="productQuantity" name="productQuantity" placeholder="Cantidad" required><br><br>
+                        </div>
+                    
+                        <button type="submit">Añadir</button>
+                    </form>
+                </div>
+            </div>
+
+
         </div>
     </div>
+    <script src="js/popup.js" defer></script>
 </body>
 </html>
