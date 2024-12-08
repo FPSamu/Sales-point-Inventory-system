@@ -159,8 +159,37 @@ document.getElementById("editProductButton").addEventListener("click", function 
     showPopup("Editar producto", "edit");
 });
 
+document.getElementById("editProductId").addEventListener("input", function () {
+    const productId = this.value;
+
+    if (!productId) {
+        clearEditFields();
+        return;
+    }
+
+    fetch(`/api/get-product?id=${productId}`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Product not found");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            document.getElementById("editProductName").value = data.nombre_producto || "";
+            document.getElementById("editProductPrice").value = data.precio || "";
+            document.getElementById("editProductQuantity").value = data.cantidad || "";
+        })
+        .catch((error) => {
+            console.error("Error fetching product:", error);
+            alert("Producto no encontrado");
+            clearEditFields();
+        });
+});
+
+
 // Function to show the popup and toggle between forms
 function showPopup(title, formType) {
+    clearEditFields();
     document.getElementById("popupTitle").innerText = title;
 
     // Toggle forms based on the type
@@ -185,4 +214,10 @@ function closePopup() {
     document.getElementById("popup").style.display = "none";
     document.getElementById("addProductForm").style.display = "none";
     document.getElementById("editProductForm").style.display = "none";
+}
+
+function clearEditFields() {
+    document.getElementById("editProductName").value = "";
+    document.getElementById("editProductPrice").value = "";
+    document.getElementById("editProductQuantity").value = "";
 }
