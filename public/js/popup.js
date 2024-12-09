@@ -150,6 +150,90 @@ document.getElementById("editProductButton").addEventListener("click", function 
     });
 });
 
+document.getElementById("removeProductButton").addEventListener("click", function () {
+    showPopup(
+        "Eliminar producto",
+        `
+        <form id="removeProductForm" style="display: none;">
+            <input type="number" id="removeProductId" name="removeProductId" placeholder="ID" required />
+            <br /><br />
+            <input type="text" id="removeProductName" name="removeProductName" placeholder="Nombre del producto" required />
+            <button id="removeSubmitButton" type="submit">Editar</button>
+        </form>
+        `
+    );
+
+    document.getElementById("editProductId").addEventListener("input", function () {
+        const productId = this.value;
+    
+        // Skip fetch if the input is empty
+        if (!productId) {
+            clearEditFields();
+            return;
+        }
+    
+        // Fetch product details from the backend
+        fetch(`/api/get-product?id=${productId}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Product not found");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                // Populate the fields with the retrieved data
+                document.getElementById("removeProductName").value = data.nombre_producto || "";
+            })
+            .catch((error) => {
+                console.error("Error fetching product:", error);
+                alert("Producto no encontrado");
+                clearEditFields();
+            });
+    });
+    
+    // Clear other fields
+    function clearEditFields() {
+        document.getElementById("removeProductName").value = "";
+    }    
+
+    // Handle form submission
+    document.getElementById("removeProductForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Collect user input
+        const productId = document.getElementById("removeProductId").value;
+        const productName = document.getElementById("removeProductName").value;
+
+        e.preventDefault(); // Prevent the default form submission
+        // Send data to backend
+        fetch("/api/remove-product", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                productId,
+                productName,
+            }),
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to remove product");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            alert("Producto eliminado con éxito!");
+            console.log("Response from server:", data);
+            closePopup();
+        })
+        .catch((error) => {
+            console.error("Error removing product:", error);
+            alert("Error al eliminar el producto. Inténtalo de nuevo.");
+        });
+    });
+});
+
 // Add Product Button
 document.getElementById("addProductButton").addEventListener("click", function () {
     showPopup("Añadir producto", "add");
@@ -158,6 +242,11 @@ document.getElementById("addProductButton").addEventListener("click", function (
 // Edit Product Button
 document.getElementById("editProductButton").addEventListener("click", function () {
     showPopup("Editar producto", "edit");
+});
+
+// Edit Product Button
+document.getElementById("removeProductButton").addEventListener("click", function () {
+    showPopup("Eliminar producto", "remove");
 });
 
 document.getElementById("editProductId").addEventListener("input", function () {
@@ -197,9 +286,15 @@ function showPopup(title, formType) {
     if (formType === "add") {
         document.getElementById("addProductForm").style.display = "block";
         document.getElementById("editProductForm").style.display = "none";
+        document.getElementById("removeProductForm").style.display = "none";
     } else if (formType === "edit") {
         document.getElementById("addProductForm").style.display = "none";
         document.getElementById("editProductForm").style.display = "block";
+        document.getElementById("removeProductForm").style.display = "none";
+    } else if (formType === "remove") {
+        document.getElementById("addProductForm").style.display = "none";
+        document.getElementById("editProductForm").style.display = "none";
+        document.getElementById("removeProductForm").style.display = "block";
     }
 
     // Display the popup

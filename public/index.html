@@ -14,6 +14,8 @@
             <ul>
                 <li><a href="">Ventas</a></li>
                 <span>|</span>
+                <li><a href="">Compras</a></li>
+                <span>|</span>
                 <li><a href="">Inventario</a></li>
                 <span>|</span>
             </ul>
@@ -127,6 +129,12 @@
                         <button id="editSubmitButton" type="submit">Editar</button>
                     </form>
 
+                    <form id="removeProductForm" style="display: none;">
+                        <input type="number" id="removeProductId" name="removeProductId" placeholder="ID" required />
+                        <br /><br />
+                        <input type="text" id="removeProductName" name="removeProductName" placeholder="Nombre del producto" required />
+                        <button id="removeSubmitButton" type="submit">Eliminar</button>
+                    </form>
                 </div>
             </div>
         </div>
