@@ -158,12 +158,12 @@ document.getElementById("removeProductButton").addEventListener("click", functio
             <input type="number" id="removeProductId" name="removeProductId" placeholder="ID" required />
             <br /><br />
             <input type="text" id="removeProductName" name="removeProductName" placeholder="Nombre del producto" required />
-            <button id="removeSubmitButton" type="submit">Editar</button>
+            <button id="removeSubmitButton" type="submit">Eliminar</button>
         </form>
         `
     );
 
-    document.getElementById("editProductId").addEventListener("input", function () {
+    document.getElementById("removeProductId").addEventListener("input", function () {
         const productId = this.value;
     
         // Skip fetch if the input is empty
