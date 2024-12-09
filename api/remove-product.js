@@ -10,9 +10,9 @@ export default function handler(req, res) {
     console.log("Request method:", req.method);
 
     if (req.method === 'POST') {
-        const productId = req.body;
+        const { productId, productName } = req.body;
 
-        if (!productId || !productName || !productPrice || !productQuantity) {
+        if (!productId || !productName) {
             res.status(400).json({ error: "All fields (id) are required" });
             return;
         }
@@ -26,7 +26,7 @@ export default function handler(req, res) {
         });
 
         const query = `DELETE FROM inventario WHERE id = ?`;
-        const value = productId;
+        const value = [ productId ];
         connection.query(query, value, (err, results) => {
             connection.end();
             if (err) {
