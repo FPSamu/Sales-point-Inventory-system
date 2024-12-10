@@ -277,8 +277,8 @@ document.getElementById("searchProductButton").addEventListener("click", functio
                 .then((data) => {
                     // Populate the fields with the retrieved data
                     document.getElementById("searchProductId").value = data.id || "";
-                    document.getElementById("searchProductPrice").value = data.precio || "";
-                    document.getElementById("searchProductQuantity").value = data.cantidad || "";
+                    document.getElementById("searchProductPrice").textContent = data.precio || "";
+                    document.getElementById("searchProductQuantity").textContent = data.cantidad || "";
                 })
                 .catch((error) => {
                     console.error("Error fetching product:", error);
@@ -296,8 +296,8 @@ document.getElementById("searchProductButton").addEventListener("click", functio
                 .then((data) => {
                     // Populate the fields with the retrieved data
                     document.getElementById("searchProductName").value = data.name || "";
-                    document.getElementById("searchProductPrice").value = data.precio || "";
-                    document.getElementById("searchProductQuantity").value = data.cantidad || "";
+                    document.getElementById("searchProductPrice").textContent = data.precio || "";
+                    document.getElementById("searchProductQuantity").textContent = data.cantidad || "";
                 })
                 .catch((error) => {
                     console.error("Error fetching product:", error);
@@ -309,8 +309,8 @@ document.getElementById("searchProductButton").addEventListener("click", functio
 
     function clearSearchFields() {
         document.getElementById("searchProductName").value = "";
-        document.getElementById("searchProductPrice").textContent = data.precio;
-    document.getElementById("searchProductQuantity").textContent = data.cantidad;
+        document.getElementById("searchProductPrice").textContent = "";
+        document.getElementById("searchProductQuantity").textContent = "";
 
     }  
 });
