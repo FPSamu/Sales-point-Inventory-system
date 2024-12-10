@@ -16,6 +16,9 @@ export default function handler(req, res) {
             res.status(400).json({ error: "All fields (id, nombre_producto, cantidad, precio) are required" });
             return;
         }
+
+        productName = productName.toUpperCase();
+
         console.log(productId);
         console.log(productName);
         console.log(productPrice);

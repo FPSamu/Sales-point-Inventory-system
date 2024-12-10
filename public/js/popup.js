@@ -261,8 +261,10 @@ document.getElementById("searchProductButton").addEventListener("click", functio
         e.preventDefault();
 
         // Collect user input
-        const productId = document.getElementById("editProductId").value;
-        const productName = document.getElementById("editProductName").value;
+        const productId = document.getElementById("searchProductId").value;
+        const productName = document.getElementById("searchProductName").value;
+
+        productName = productName.toUpperCase();
 
         e.preventDefault(); // Prevent the default form submission
         // Send data to backend

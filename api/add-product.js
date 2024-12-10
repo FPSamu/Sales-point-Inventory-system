@@ -2,12 +2,13 @@ import mysql from 'mysql2';
 
 export default function handler(req, res) {
     if (req.method === 'POST') {
-        const { productName, productPrice, productQuantity } = req.body;
+        let { productName, productPrice, productQuantity } = req.body;
 
         if (!productName || !productPrice || !productQuantity) {
             res.status(400).json({ error: 'All fields are required' });
             return;
         }
+        productName = productName.toUpperCase();
 
         const connection = mysql.createConnection({
             host: process.env.DB_HOST,
