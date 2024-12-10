@@ -286,7 +286,7 @@ document.getElementById("searchProductButton").addEventListener("click", functio
                     clearSearchFields();
             });
         } else if (!productName){
-            fetch(`/api/get-product?id=${productId}`)
+            fetch(`/api/search-product?id=${productId}`)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error("Product not found");
@@ -306,12 +306,6 @@ document.getElementById("searchProductButton").addEventListener("click", functio
             });
         }
     });
-
-    function clearSearchFields() {
-        document.getElementById("searchProductName").value = "";
-        document.getElementById("searchProductPrice").value = "";
-        document.getElementById("searchProductQuantity").value = "";
-    }  
 });
 
 // Add Product Button
@@ -411,3 +405,9 @@ function clearEditFields() {
     document.getElementById("editProductPrice").value = "";
     document.getElementById("editProductQuantity").value = "";
 }
+
+function clearSearchFields() {
+    document.getElementById("searchProductName").value = "";
+    document.getElementById("searchProductPrice").value = "";
+    document.getElementById("searchProductQuantity").value = "";
+}  
