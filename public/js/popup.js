@@ -234,6 +234,116 @@ document.getElementById("removeProductButton").addEventListener("click", functio
     });
 });
 
+document.getElementById("searchProductButton").addEventListener("click", function () {
+    showPopup(
+        "Buscar producto",
+        `
+        <form id="searchProductForm" style="display: none;">
+            <input type="number" id="searchProductId" name="searchProductId" placeholder="ID" required />
+            <br /><br />
+            <input type="text" id="searchProductName" name="searchProductName" placeholder="Nombre del producto" required />
+            <br /><br />
+            <div>
+                <label for="searchProductPrice">Precio:</label>
+                <span id="searchProductPrice" name="searchProductPrice">N/A</span>
+                <br /><br />
+                <label for="searchProductQuantity">Cantidad:</label>
+                <span id="searchProductQuantity" name="searchProductQuantity">N/A</span>
+                <br /><br />
+            </div>
+            <button id="searchSubmitButton" type="submit">Buscar</button>
+        </form>
+        `
+    );
+
+    document.getElementById("searchProductId").addEventListener("input", function () {
+        const productId = this.value;
+    
+        // Skip fetch if the input is empty
+        if (!productId) {
+            clearEditFields();
+            return;
+        }
+    
+        // Fetch product details from the backend
+        fetch(`/api/get-product?id=${productId}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Product not found");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                // Populate the fields with the retrieved data
+                document.getElementById("searchProductName").value = data.nombre_producto || "";
+                document.getElementById("searchProductPrice").value = data.precio || "";
+                document.getElementById("searchProductQuantity").value = data.cantidad || "";
+            })
+            .catch((error) => {
+                console.error("Error fetching product:", error);
+                alert("Producto no encontrado");
+                clearEditFields();
+            });
+    });  
+
+    // Handle form submission
+    document.getElementById("searchProductForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Collect user input
+        const productId = document.getElementById("editProductId").value;
+        const productName = document.getElementById("editProductName").value;
+
+        e.preventDefault(); // Prevent the default form submission
+        // Send data to backend
+        if (!productId) {
+            fetch(`/api/search-product?name=${productName}`)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Product not found");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // Populate the fields with the retrieved data
+                    document.getElementById("searchProductId").value = data.id || "";
+                    document.getElementById("searchProductPrice").value = data.precio || "";
+                    document.getElementById("searchProductQuantity").value = data.cantidad || "";
+                })
+                .catch((error) => {
+                    console.error("Error fetching product:", error);
+                    alert("Producto no encontrado");
+                    clearSearchFields();
+            });
+        } else if (!productName){
+            fetch(`/api/get-product?id=${productId}`)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Product not found");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // Populate the fields with the retrieved data
+                    document.getElementById("searchProductName").value = data.name || "";
+                    document.getElementById("searchProductPrice").value = data.precio || "";
+                    document.getElementById("searchProductQuantity").value = data.cantidad || "";
+                })
+                .catch((error) => {
+                    console.error("Error fetching product:", error);
+                    alert("Producto no encontrado");
+                    clearSearchFields();
+            });
+        }
+    });
+
+    function clearSearchFields() {
+        document.getElementById("searchProductName").value = "";
+        document.getElementById("searchProductPrice").value = "";
+        document.getElementById("searchProductQuantity").value = "";
+    }  
+});
+
 // Add Product Button
 document.getElementById("addProductButton").addEventListener("click", function () {
     showPopup("Añadir producto", "add");

@@ -93,6 +93,11 @@
                     <img src="images/edit.png" alt="Edit_image_button">
                     <p>Editar producto</p>
                 </div>
+
+                <div id="searchProductButton" class="button">
+                    <img src="images/search.png" alt="Search_image_button">
+                    <p>Buscar producto</p>
+                </div>
             </div>
 
             <!-- Popup Window -->
@@ -128,12 +133,28 @@
                         </div>
                         <button id="editSubmitButton" type="submit">Editar</button>
                     </form>
-
+                    
                     <form id="removeProductForm" style="display: none;">
                         <input type="number" id="removeProductId" name="removeProductId" placeholder="ID" required />
                         <br /><br />
                         <input type="text" id="removeProductName" name="removeProductName" placeholder="Nombre del producto" required />
                         <button id="removeSubmitButton" type="submit">Eliminar</button>
+                    </form>                
+
+                    <form id="searchProductForm" style="display: none;">
+                        <input type="number" id="searchProductId" name="searchProductId" placeholder="ID" required />
+                        <br /><br />
+                        <input type="text" id="searchProductName" name="searchProductName" placeholder="Nombre del producto" required />
+                        <br /><br />
+                        <div>
+                            <label for="searchProductPrice">Precio:</label>
+                            <span id="searchProductPrice" name="searchProductPrice">N/A</span>
+                            <br /><br />
+                            <label for="searchProductQuantity">Cantidad:</label>
+                            <span id="searchProductQuantity" name="searchProductQuantity">N/A</span>
+                            <br /><br />
+                        </div>
+                        <button id="searchSubmitButton" type="submit">Buscar</button>
                     </form>
                 </div>
             </div>
