@@ -261,8 +261,8 @@ document.getElementById("searchProductButton").addEventListener("click", functio
         e.preventDefault();
 
         // Collect user input
-        const productId = document.getElementById("editProductId").value;
-        const productName = document.getElementById("editProductName").value;
+        const productId = document.getElementById("searchProductId").value;
+        const productName = document.getElementById("searchProductName").value;
 
         e.preventDefault(); // Prevent the default form submission
         // Send data to backend
@@ -286,7 +286,7 @@ document.getElementById("searchProductButton").addEventListener("click", functio
                     clearSearchFields();
             });
         } else if (!productName){
-            fetch(`/api/get-product?id=${productId}`)
+            fetch(`/api/search-product?id=${productId}`)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error("Product not found");
