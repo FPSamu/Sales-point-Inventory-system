@@ -183,6 +183,30 @@ h1 {
     text-align: center;
 }
 
+.popup-content #searchProductForm .label {
+    width: 50%;
+    height: 4vh;
+    border-radius: 0.5vh;
+    background-color: #fff;
+    font-family: sans-serif;
+    font-size: 1vw;
+    font-weight: 700;
+    color: #777;
+}
+
+.popup-content #searchProductForm label {
+    margin-left: 1.5vw;
+    line-height: 4vh;
+}
+
+.popup-content #searchProductForm #searchProductPriceDiv{
+    margin-right: 1vw;
+}
+
+.popup-content #searchProductForm #searchProductQuantity/Div{
+    margin-left: 1vw;
+}
+
 button {
     background-color: #F3F0CB;
     margin: 2vh 0 3vh 0;

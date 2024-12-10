@@ -147,11 +147,14 @@
                         <input type="text" id="searchProductName" name="searchProductName" placeholder="Nombre del producto"/>
                         <br /><br />
                         <div>
-                            <label for="searchProductPrice">Precio:</label>
-                            <span id="searchProductPrice" name="searchProductPrice">N/A</span>
-                            <br /><br />
-                            <label for="searchProductQuantity">Cantidad:</label>
-                            <span id="searchProductQuantity" name="searchProductQuantity">N/A</span>
+                            <div class="label" id="searchProductPriceDiv">
+                                <label for="searchProductPrice">Precio:</label>
+                                <span id="searchProductPrice" name="searchProductPrice"></span>
+                            </div>
+                            <div class="label" id="searchProductQuantityDiv">
+                                <label for="searchProductQuantity">Cantidad:</label>
+                                <span id="searchProductQuantity" name="searchProductQuantity"></span>
+                            </div>
                             <br /><br />
                         </div>
                         <button id="searchSubmitButton" type="submit">Buscar</button>

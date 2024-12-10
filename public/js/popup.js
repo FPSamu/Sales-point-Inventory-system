@@ -20,7 +20,7 @@ document.getElementById("addProductButton").addEventListener("click", function (
         e.preventDefault();
 
         // Collect user input
-        const productName = document.getElementById("productName").value.toUpperCase;
+        const productName = document.getElementById("productName").value;
         const productPrice = document.getElementById("productPrice").value;
         const productQuantity = document.getElementById("productQuantity").value;
 
@@ -261,8 +261,8 @@ document.getElementById("searchProductButton").addEventListener("click", functio
         e.preventDefault();
 
         // Collect user input
-        const productId = document.getElementById("searchProductId").value;
-        let productName = document.getElementById("searchProductName").value.toUpperCase();
+        const productId = document.getElementById("editProductId").value;
+        const productName = document.getElementById("editProductName").value;
 
         e.preventDefault(); // Prevent the default form submission
         // Send data to backend
@@ -286,7 +286,7 @@ document.getElementById("searchProductButton").addEventListener("click", functio
                     clearSearchFields();
             });
         } else if (!productName){
-            fetch(`/api/search-product?id=${productId}`)
+            fetch(`/api/get-product?id=${productId}`)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error("Product not found");
@@ -306,6 +306,12 @@ document.getElementById("searchProductButton").addEventListener("click", functio
             });
         }
     });
+
+    function clearSearchFields() {
+        document.getElementById("searchProductName").value = "";
+        document.getElementById("searchProductPrice").value = "";
+        document.getElementById("searchProductQuantity").value = "";
+    }  
 });
 
 // Add Product Button
@@ -405,9 +411,3 @@ function clearEditFields() {
     document.getElementById("editProductPrice").value = "";
     document.getElementById("editProductQuantity").value = "";
 }
-
-function clearSearchFields() {
-    document.getElementById("searchProductName").value = "";
-    document.getElementById("searchProductPrice").value = "";
-    document.getElementById("searchProductQuantity").value = "";
-}  
