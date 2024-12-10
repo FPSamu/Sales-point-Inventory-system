@@ -256,36 +256,6 @@ document.getElementById("searchProductButton").addEventListener("click", functio
         `
     );
 
-    document.getElementById("searchProductId").addEventListener("input", function () {
-        const productId = this.value;
-    
-        // Skip fetch if the input is empty
-        if (!productId) {
-            clearEditFields();
-            return;
-        }
-    
-        // Fetch product details from the backend
-        fetch(`/api/get-product?id=${productId}`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Product not found");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                // Populate the fields with the retrieved data
-                document.getElementById("searchProductName").value = data.nombre_producto || "";
-                document.getElementById("searchProductPrice").value = data.precio || "";
-                document.getElementById("searchProductQuantity").value = data.cantidad || "";
-            })
-            .catch((error) => {
-                console.error("Error fetching product:", error);
-                alert("Producto no encontrado");
-                clearEditFields();
-            });
-    });  
-
     // Handle form submission
     document.getElementById("searchProductForm").addEventListener("submit", function (e) {
         e.preventDefault();
@@ -354,9 +324,14 @@ document.getElementById("editProductButton").addEventListener("click", function 
     showPopup("Editar producto", "edit");
 });
 
-// Edit Product Button
+// Remove Product Button
 document.getElementById("removeProductButton").addEventListener("click", function () {
     showPopup("Eliminar producto", "remove");
+});
+
+// Search Product Button
+document.getElementById("searchProductButton").addEventListener("click", function () {
+    showPopup("Buscar producto", "search");
 });
 
 document.getElementById("editProductId").addEventListener("input", function () {
@@ -397,14 +372,22 @@ function showPopup(title, formType) {
         document.getElementById("addProductForm").style.display = "block";
         document.getElementById("editProductForm").style.display = "none";
         document.getElementById("removeProductForm").style.display = "none";
+        document.getElementById("searchProductForm").style.display = "none";
     } else if (formType === "edit") {
         document.getElementById("addProductForm").style.display = "none";
         document.getElementById("editProductForm").style.display = "block";
         document.getElementById("removeProductForm").style.display = "none";
+        document.getElementById("searchProductForm").style.display = "none";
     } else if (formType === "remove") {
         document.getElementById("addProductForm").style.display = "none";
         document.getElementById("editProductForm").style.display = "none";
         document.getElementById("removeProductForm").style.display = "block";
+        document.getElementById("searchProductForm").style.display = "none";
+    } else if (formType === "search") {
+        document.getElementById("addProductForm").style.display = "none";
+        document.getElementById("editProductForm").style.display = "none";
+        document.getElementById("removeProductForm").style.display = "none";
+        document.getElementById("searchProductForm").style.display = "block";
     }
 
     // Display the popup
