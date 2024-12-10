@@ -20,7 +20,7 @@ document.getElementById("addProductButton").addEventListener("click", function (
         e.preventDefault();
 
         // Collect user input
-        const productName = document.getElementById("productName").value;
+        const productName = document.getElementById("productName").value.toUpperCase;
         const productPrice = document.getElementById("productPrice").value;
         const productQuantity = document.getElementById("productQuantity").value;
 
@@ -262,9 +262,7 @@ document.getElementById("searchProductButton").addEventListener("click", functio
 
         // Collect user input
         const productId = document.getElementById("searchProductId").value;
-        const productName = document.getElementById("searchProductName").value;
-
-        productName = productName.toUpperCase();
+        let productName = document.getElementById("searchProductName").value.toUpperCase();
 
         e.preventDefault(); // Prevent the default form submission
         // Send data to backend
