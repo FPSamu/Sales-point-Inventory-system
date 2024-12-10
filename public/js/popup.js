@@ -295,7 +295,7 @@ document.getElementById("searchProductButton").addEventListener("click", functio
                 })
                 .then((data) => {
                     // Populate the fields with the retrieved data
-                    document.getElementById("searchProductName").value = data.name || "";
+                    document.getElementById("searchProductName").value = data.nombre_producto || "";
                     document.getElementById("searchProductPrice").textContent = data.precio || "";
                     document.getElementById("searchProductQuantity").textContent = data.cantidad || "";
                 })

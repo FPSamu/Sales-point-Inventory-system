@@ -199,6 +199,11 @@ h1 {
     line-height: 4vh;
 }
 
+.popup-content #searchProductForm span {
+    margin-left: 1.5vw;
+    line-height: 4vh;
+}
+
 .popup-content #searchProductForm #searchProductPriceDiv{
     margin-right: 1vw;
 }
