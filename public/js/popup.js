@@ -310,6 +310,7 @@ function closePopup() {
     document.getElementById("popup").style.display = "none";
     document.getElementById("addProductForm").style.display = "none";
     document.getElementById("editProductForm").style.display = "none";
+    window.location.reload();
 }
 
 function clearEditFields() {

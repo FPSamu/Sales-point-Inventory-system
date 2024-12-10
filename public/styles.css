@@ -69,10 +69,13 @@ h1 {
     width: 60vw;
     height: 75vh;
     border: 1px black solid;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .content .table table {
     width: 100%;
+    border-collapse: collapse;
 }
 
 .content .buttons {
