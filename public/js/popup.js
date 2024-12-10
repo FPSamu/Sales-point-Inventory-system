@@ -309,8 +309,9 @@ document.getElementById("searchProductButton").addEventListener("click", functio
 
     function clearSearchFields() {
         document.getElementById("searchProductName").value = "";
-        document.getElementById("searchProductPrice").value = "";
-        document.getElementById("searchProductQuantity").value = "";
+        document.getElementById("searchProductPrice").textContent = data.precio;
+    document.getElementById("searchProductQuantity").textContent = data.cantidad;
+
     }  
 });
 

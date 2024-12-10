@@ -14,7 +14,7 @@ export default function handler(req, res) {
     if (req.method === "GET") {
         const { id, name } = req.query;
 
-        if (!id && !name) {
+        if (!id && (!name || name.trim() === "")) {
             res.status(400).json({ error: "Product ID or name is required" });
             return;
         }
@@ -25,12 +25,15 @@ export default function handler(req, res) {
             query = "SELECT * FROM inventario WHERE id = ?";
             params = [id];
         } else if (name) {
-            query = "SELECT * FROM inventario WHERE nombre_producto = ?";
-            params = [name];
+            query = "SELECT * FROM inventario WHERE LOWER(nombre_producto) = LOWER(?)";
+            params = [name.trim()];
         }
+
+        console.log("Executing query:", query, params);
 
         pool.query(query, params, (err, results) => {
             if (err) {
+                console.error("Database error:", err);
                 res.status(500).json({ error: "Database query failed", details: err.message });
                 return;
             }
