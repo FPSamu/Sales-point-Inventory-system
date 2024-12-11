@@ -20,7 +20,7 @@ export default async function handler(req, res) {
         console.log("Connected to MongoDB!");
 
         // Access the database and collection
-        const database = client.db(process.env.DB_NAME);
+        const database = client.db(process.env.DB_NAME_MONGO);
         const collection = database.collection('inventario');
 
         // Fetch documents from the collection
