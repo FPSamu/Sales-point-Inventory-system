@@ -26,15 +26,14 @@ export default async function handler(req, res) {
 
             const counterResult = await countersCollection.findOneAndUpdate(
                 { _id: 'productId' }, // Lookup counter document
-                { $inc: { seq: 1 } }, // Increment the sequence
-                { returnDocument: 'after', upsert: true } // Create the counter if not exists
+                { $inc: { seq: 1 } },
             );
 
             const nextId = counterResult.value.seq; // Extract the next auto-incremented ID value
 
             // Insert the new product into MongoDB
             const result = await inventarioCollection.insertOne({
-                id: nextId, // Use the auto-incremented ID here
+                id: parseInt(nextId), // Use the auto-incremented ID here
                 nombre_producto: productName,
                 cantidad: parseInt(productQuantity),
                 precio: parseFloat(productPrice),
