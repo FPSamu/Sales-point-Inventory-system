@@ -25,25 +25,24 @@ export default async function handler(req, res) {
             const countersCollection = database.collection('counters');
 
             const counterResult = await countersCollection.findOneAndUpdate(
-                { _id: 'productId' }, // Search for the counter document
-                { $inc: { seq: 1 } }, // Increment sequence
-                { returnDocument: 'after', upsert: true } // Ensure it inserts if not found
+                { _id: 'productId' }, // Lookup counter document
+                { $inc: { seq: 1 } }, // Increment the sequence
+                { returnDocument: 'after', upsert: true } // Create the counter if not exists
             );
 
-            const nextId = counterResult.value.seq; // Extract the incremented value
+            const nextId = counterResult.value.seq; // Extract the next auto-incremented ID value
 
             // Insert the new product into MongoDB
             const result = await inventarioCollection.insertOne({
-                id: nextId, // Auto-incremented ID
+                id: nextId, // Use the auto-incremented ID here
                 nombre_producto: productName,
                 cantidad: parseInt(productQuantity),
                 precio: parseFloat(productPrice),
             });
 
-            res.status(200).json({
+            res.status(200).json({ 
                 message: 'Product added successfully',
-                id: result.insertedId, // ID of the newly inserted product
-                autoIncrementId: nextId,
+                id: nextId // Respond with the auto-incremented ID
             });
         } catch (error) {
             console.error('Database insert error:', error);
