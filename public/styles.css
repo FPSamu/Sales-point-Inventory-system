@@ -1,8 +1,8 @@
 @font-face {
     font-family: 'Kantumruy';
-    src: url('fonts/Kantumruy-Regular.ttf') format('woff2'),
-    url('fonts/Kantumruy-Light.ttf') format('woff2'),
-    url('fonts/Kantumruy-Bold.ttf') format('woff2');
+    src:url('fonts/Kantumruy-Regular.ttf') format('woff2'),
+        url('fonts/Kantumruy-Light.ttf') format('woff2'),
+        url('fonts/Kantumruy-Bold.ttf') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
@@ -22,7 +22,7 @@ body {
 nav {
     padding: 0;
     background-color: #939393;
-    font-family: 'Kantumruy';
+    font-family: 'Kantumruy', sans-serif;
     font-weight: 700;
     font-size: 30;
     box-shadow: 0 1px 10px #141414;
@@ -53,7 +53,7 @@ nav ul span {
 h1 {
     margin-top: 2%;
     text-align: center;
-    font-family: 'Kantumruy';
+    font-family: 'Kantumruy', sans-serif;
     font-weight: 700;
     font-size: 3vw;
     margin-bottom: 0;
@@ -91,7 +91,7 @@ h1 {
     display: flex;
     box-shadow: 0px 3px 10px #141414;
     cursor: pointer;
-    font-family: 'Kantumruy';
+    font-family: 'Kantumruy', sans-serif;
     font-weight: 700;
     font-size: 1.9vw;
 }
@@ -122,7 +122,7 @@ h1 {
 }
 
 .popup-content h2 {
-    font-family: 'Kantumruy';
+    font-family: 'Kantumruy', sans-serif;
     font-weight: 700;
     font-size: 1.8vw;
 }

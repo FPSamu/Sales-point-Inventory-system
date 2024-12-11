@@ -1,53 +1,42 @@
 import dotenv from 'dotenv'; // Import dotenv for environment variables
-import mysql from 'mysql2'; // Import MySQL
 import express from 'express'; // Import Express
 import cors from 'cors';
-
+import { MongoClient } from 'mongodb'; // Import MongoDB client
 
 dotenv.config();
-
-export default function handler(req, res) {
-  const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  });
-
-  connection.connect(err => {
-    if (err) {
-      console.error('Database connection failed:', err);
-      res.status(500).json({ error: 'Database connection failed', details: err.message });
-      return;
-    }
-
-    const query = 'SELECT * FROM inventario';
-    connection.query(query, (err, results) => {
-      connection.end(); // Close connection
-      if (err) {
-        console.error('Query failed:', err);
-        res.status(500).json({ error: 'Query failed', details: err.message });
-        return;
-      }
-      res.status(200).json(results);
-    });
-  });
-}
 
 const app = express();
 
 app.use(cors());
 
-app.get('/data', (req, res) => {
-  const query = 'SELECT * FROM inventario';
+const uri = process.env.MONGO_URI; // MongoDB connection string from environment variables
+const dbName = process.env.DB_NAME; // Database name from environment variables
 
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error('Database query error:', err); // Log the exact error
-      res.status(500).json({ error: 'Database query failed', details: err.message });
-      return;
-    }
-    console.log('Query results:', results); // Log results for debugging
-    res.json(results);
-  });
+async function getDataFromMongoDB() {
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  try {
+    await client.connect(); // Connect to MongoDB
+    console.log('Connected to MongoDB');
+    
+    const database = client.db(dbName);
+    const collection = database.collection('inventario'); // Collection name
+    
+    const results = await collection.find({}).toArray(); // Fetch all documents
+    return results;
+  } catch (err) {
+    console.error('Error connecting to MongoDB:', err);
+    throw err; // Re-throw the error to handle it outside
+  } finally {
+    await client.close(); // Ensure the connection is closed
+  }
+}
+
+app.get('/data', async (req, res) => {
+  try {
+    const results = await getDataFromMongoDB();
+    res.status(200).json(results); // Send the data as JSON
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    res.status(500).json({ error: 'Failed to fetch data', details: err.message });
+  }
 });
