@@ -21,30 +21,18 @@ export default async function handler(req, res) {
 
             // Select database and collection
             const database = client.db(process.env.DB_NAME_MONGO);
-            const inventarioCollection = database.collection('inventario');
-            const countersCollection = database.collection('counters');
-
-            const counterResult = await countersCollection.findOneAndUpdate(
-                { _id: 'productId' }, // Lookup counter document
-                { $inc: { seq: 1 } },
-                { returnDocument: 'after', upsert: true } // Ensure counter is initialized if it doesn't exist
-            );
-
-            const nextId = counterResult.value.seq; // Extract the next auto-incremented ID value
+            const collection = database.collection('inventario');
 
             // Insert the new product into MongoDB
-            const result = await inventarioCollection.insertOne({
-                id: parseInt(nextId), // Use the auto-incremented ID here
+            const result = await collection.insertOne({
                 nombre_producto: productName,
                 cantidad: parseInt(productQuantity),
                 precio: parseFloat(productPrice),
             });
 
-            console.log("Insert result:", result);
-
             res.status(200).json({ 
                 message: 'Product added successfully',
-                id: nextId // Respond with the auto-incremented ID
+                id: result.insertedId
             });
         } catch (error) {
             console.error('Database insert error:', error);
