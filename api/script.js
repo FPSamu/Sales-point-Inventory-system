@@ -12,24 +12,28 @@ app.use(cors());
 const uri = process.env.MONGO_URI; // MongoDB connection string from environment variables
 const dbName = process.env.DB_NAME; // Database name from environment variables
 
-async function getDataFromMongoDB() {
+async function fetchData() {
+  console.log('Connecting to MongoDB...'); // Log the start of the connection
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
   try {
-    await client.connect(); // Connect to MongoDB
-    console.log('Connected to MongoDB');
-    
-    const database = client.db(dbName);
-    const collection = database.collection('inventario'); // Collection name
-    
-    const results = await collection.find({}).toArray(); // Fetch all documents
-    return results;
-  } catch (err) {
-    console.error('Error connecting to MongoDB:', err);
-    throw err; // Re-throw the error to handle it outside
-  } finally {
-    await client.close(); // Ensure the connection is closed
+      await client.connect();
+      console.log('Connected to MongoDB');
+      const database = client.db(dbName);
+      const collection = database.collection('inventario');
+
+      console.log('Fetching data...');
+      const results = await collection.find({}).toArray();
+      console.log('Fetched data:', results);
+
+      return results;
+  } catch (error) {
+      console.error('Error occurred:', error);
   }
 }
+
+fetchData();
+
 
 app.get('/data', async (req, res) => {
   try {
