@@ -1,46 +1,35 @@
-import dotenv from 'dotenv'; // Import dotenv for environment variables
-import express from 'express'; // Import Express
-import cors from 'cors';
-import { MongoClient } from 'mongodb'; // Import MongoDB client
+import dotenv from 'dotenv';
+import { MongoClient } from 'mongodb';
 
 dotenv.config();
 
-const app = express();
+let client;
+let db;
 
-app.use(cors());
-
-const uri = process.env.MONGO_URI; // MongoDB connection string from environment variables
-const dbName = process.env.DB_NAME; // Database name from environment variables
-
-async function fetchData() {
-  console.log('Connecting to MongoDB...'); // Log the start of the connection
-  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  try {
-      await client.connect();
-      console.log('Connected to MongoDB');
-      const database = client.db(dbName);
-      const collection = database.collection('inventario');
-
-      console.log('Fetching data...');
-      const results = await collection.find({}).toArray();
-      console.log('Fetched data:', results);
-
-      return results;
-  } catch (error) {
-      console.error('Error occurred:', error);
-  }
+async function connectToDatabase() {
+    if (!client || !client.isConnected()) {
+        console.log('Initializing new MongoDB connection...');
+        client = new MongoClient(process.env.MONGO_URI);
+        await client.connect();
+        db = client.db(process.env.DB_NAME); // Specify the database name
+        console.log('Connected to MongoDB');
+    } else {
+        console.log('Reusing existing MongoDB connection');
+    }
+    return db;
 }
 
-fetchData();
+export default async function handler(req, res) {
+    try {
+        const database = await connectToDatabase();
+        const collection = database.collection('inventario'); // Specify the collection
 
+        console.log('Fetching data from MongoDB...');
+        const results = await collection.find({}).toArray();
 
-app.get('/data', async (req, res) => {
-  try {
-    const results = await getDataFromMongoDB();
-    res.status(200).json(results); // Send the data as JSON
-  } catch (err) {
-    console.error('Error fetching data:', err);
-    res.status(500).json({ error: 'Failed to fetch data', details: err.message });
-  }
-});
+        res.status(200).json(results); // Send the data as a response
+    } catch (error) {
+        console.error('Error occurred:', error);
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    }
+}
