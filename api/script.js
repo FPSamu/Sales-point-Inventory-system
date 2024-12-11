@@ -7,16 +7,19 @@ let client;
 let db;
 
 async function connectToDatabase() {
-    if (!client || !client.isConnected()) {
-        console.log('Initializing new MongoDB connection...');
-        client = new MongoClient(process.env.MONGO_URI);
-        await client.connect();
-        db = client.db(process.env.DB_NAME); // Specify the database name
-        console.log('Connected to MongoDB');
-    } else {
-        console.log('Reusing existing MongoDB connection');
-    }
-    return db;
+  if (!client) {
+      console.log('Initializing new MongoDB client...');
+      client = new MongoClient(process.env.MONGO_URI);
+      await client.connect();
+      db = client.db(process.env.DB_NAME); // Specify the database name
+      console.log('Connected to MongoDB');
+  } else if (!client.topology?.isConnected()) {
+      console.log('Reconnecting MongoDB client...');
+      await client.connect();
+  } else {
+      console.log('Reusing existing MongoDB connection');
+  }
+  return db;
 }
 
 export default async function handler(req, res) {
