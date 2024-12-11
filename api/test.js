@@ -12,12 +12,37 @@ async function run() {
 
         console.log("Connected to MongoDB!");
 
-        // Specify the database and collection
+        // Specify the database and collections
         const database = client.db(process.env.DB_NAME_MONGO);
-        const collection = database.collection('inventario');
+        const inventarioCollection = database.collection('inventario');
+        const countersCollection = database.collection('counters');
 
-        // Perform an operation, e.g., find documents
-        const documents = await collection.find({}).toArray();
+        console.log("Attempting to find or increment sequence...");
+        const counterResult = await countersCollection.findOneAndUpdate(
+            { _id: 'productId' }, // Filter for the productId counter
+            { $inc: { seq: 1 } }, // Increment the sequence by 1
+            { returnDocument: 'after', upsert: true } // Create the counter if it doesn't exist
+        );
+
+        console.log("Counter result after findOneAndUpdate:", counterResult);
+
+
+        const doc = await countersCollection.findOne({ _id: 'productId' });
+        const productId = doc?.seq;
+        console.log("Using productId:", productId);
+
+        // Insert the new product into MongoDB
+        const result = await inventarioCollection.insertOne({
+            id: parseInt(productId),
+            nombre_producto: "producto 1",
+            cantidad: 1000,
+            precio: 100,
+        });
+
+        console.log("Insert result:", result);
+
+        console.log("Documents in the inventario collection:");
+        const documents = await inventarioCollection.find({}).toArray();
         console.log("Documents:", documents);
 
     } catch (error) {

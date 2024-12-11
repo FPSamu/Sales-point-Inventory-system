@@ -30,11 +30,12 @@ export default async function handler(req, res) {
                 { returnDocument: 'after', upsert: true } // Create the counter if it doesn't exist
             );
 
-            const productId = counterResult.value.seq; // Extract the auto-incremented ID value
+            const doc = await countersCollection.findOne({ _id: 'productId' });
+            const productId = doc?.seq; // Extract the auto-incremented ID value
 
             // Insert the new product into MongoDB
             const result = await inventarioCollection.insertOne({
-                id: productId,
+                id: parseInt(productId),
                 nombre_producto: productName,
                 cantidad: parseInt(productQuantity),
                 precio: parseFloat(productPrice),
