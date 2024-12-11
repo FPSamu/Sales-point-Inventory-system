@@ -1,16 +1,16 @@
-import mysql from "mysql2";
+import { MongoClient, ObjectId } from 'mongodb';
 
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-});
+const client = new MongoClient(process.env.MONGO_URI);
 
-export default function handler(req, res) {
+export const config = {
+    api: {
+        bodyParser: true,
+    },
+};
+
+export default async function handler(req, res) {
+    console.log("Request method:", req.method);
+
     if (req.method === "GET") {
         const { id, name } = req.query;
 
@@ -19,32 +19,39 @@ export default function handler(req, res) {
             return;
         }
 
-        let query, params;
+        try {
+            // Connect to MongoDB Atlas
+            await client.connect();
+            console.log("Connected to MongoDB Atlas!");
 
-        if (id) {
-            query = "SELECT * FROM inventario WHERE id = ?";
-            params = [id];
-        } else if (name) {
-            query = "SELECT * FROM inventario WHERE LOWER(nombre_producto) = LOWER(?)";
-            params = [name.trim()];
-        }
+            const database = client.db(process.env.DB_NAME_MONGO);
+            const collection = database.collection('inventario');
 
-        console.log("Executing query:", query, params);
-
-        pool.query(query, params, (err, results) => {
-            if (err) {
-                console.error("Database error:", err);
-                res.status(500).json({ error: "Database query failed", details: err.message });
-                return;
+            let query = {};
+            
+            if (id) {
+                query = { _id: new ObjectId(id) };
+            } else if (name) {
+                query = { nombre_producto: { $regex: `^${name.trim()}$`, $options: 'i' } };
             }
 
-            if (results.length === 0) {
+            console.log("Executing MongoDB query:", query);
+
+            const result = await collection.findOne(query);
+
+            if (!result) {
                 res.status(404).json({ error: "Product not found" });
                 return;
             }
 
-            res.status(200).json(results[0]);
-        });
+            res.status(200).json(result);
+        } catch (error) {
+            console.error("Error during query:", error.message);
+            res.status(500).json({ error: "Failed to query database", details: error.message });
+        } finally {
+            await client.close();
+            console.log("MongoDB connection closed.");
+        }
     } else {
         res.setHeader("Allow", ["GET"]);
         res.status(405).json({ error: `Method ${req.method} Not Allowed` });

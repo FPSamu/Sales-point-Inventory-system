@@ -1,12 +1,15 @@
-import mysql from "mysql2";
+import { MongoClient } from 'mongodb';
 
 export const config = {
     api: {
         bodyParser: true,
     },
-};  
+};
 
-export default function handler(req, res) {
+// Initialize MongoDB client
+const client = new MongoClient(process.env.MONGO_URI);
+
+export default async function handler(req, res) {
     console.log("Request method:", req.method);
 
     if (req.method === 'POST') {
@@ -24,29 +27,38 @@ export default function handler(req, res) {
         console.log(productPrice);
         console.log(productQuantity);
 
-        const connection = mysql.createConnection({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-        });
+        try {
+            // Connect to MongoDB Atlas
+            await client.connect();
+            console.log("Connected to MongoDB Atlas!");
 
-        const query = `UPDATE inventario SET nombre_producto = ?, cantidad = ?, precio = ? WHERE id = ?`;
-        const values = [productName, productQuantity, productPrice, productId];
-        connection.query(query, values, (err, results) => {
-            connection.end();
-            if (err) {
-                console.error("Query Error:", err.message);
-                res.status(500).json({ error: 'Failed to update product', details: err.message });
-                return;
-            }
+            const database = client.db(process.env.DB_NAME_MONGO);
+            const collection = database.collection('inventario');
 
-            if (results.affectedRows === 0) {
+            // Attempt to update the document in MongoDB
+            const result = await collection.updateOne(
+                { _id: new MongoClient.ObjectId(productId) }, // Filter by ID
+                {
+                    $set: {
+                        nombre_producto: productName,
+                        cantidad: parseInt(productQuantity),
+                        precio: parseFloat(productPrice),
+                    }
+                }
+            );
+
+            if (result.matchedCount === 0) {
                 res.status(404).json({ error: "Product not found" });
-                return;
+            } else {
+                res.status(200).json({ message: "Product updated successfully" });
             }
-            res.status(200).json({ message: "Product updated successfully" });
-        });
+        } catch (error) {
+            console.error("Database query error:", error.message);
+            res.status(500).json({ error: 'Failed to update product', details: error.message });
+        } finally {
+            await client.close();
+            console.log("MongoDB connection closed.");
+        }
     } else {
         res.setHeader('Allow', ['POST']);
         res.status(405).json({ error: `Method ${req.method} Not Allowed` });
