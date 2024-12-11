@@ -27,6 +27,7 @@ export default async function handler(req, res) {
             const counterResult = await countersCollection.findOneAndUpdate(
                 { _id: 'productId' }, // Lookup counter document
                 { $inc: { seq: 1 } },
+                { returnDocument: 'after', upsert: true } // Ensure counter is initialized if it doesn't exist
             );
 
             const nextId = counterResult.value.seq; // Extract the next auto-incremented ID value
@@ -38,6 +39,8 @@ export default async function handler(req, res) {
                 cantidad: parseInt(productQuantity),
                 precio: parseFloat(productPrice),
             });
+
+            console.log("Insert result:", result);
 
             res.status(200).json({ 
                 message: 'Product added successfully',
