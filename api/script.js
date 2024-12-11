@@ -3,36 +3,35 @@ import { MongoClient } from 'mongodb';
 
 dotenv.config();
 
+// Initialize the MongoDB client outside the function to enable connection reuse
 let client;
-let db;
+let clientPromise;
 
-async function connectToDatabase() {
-  if (!client) {
-      console.log('Initializing new MongoDB client...');
-      client = new MongoClient(process.env.MONGO_URI);
-      await client.connect();
-      db = client.db(process.env.DB_NAME); // Specify the database name
-      console.log('Connected to MongoDB');
-  } else if (!client.topology?.isConnected()) {
-      console.log('Reconnecting MongoDB client...');
-      await client.connect();
-  } else {
-      console.log('Reusing existing MongoDB connection');
-  }
-  return db;
+if (!client) {
+    client = new MongoClient(process.env.MONGO_URI);
+    clientPromise = client.connect();
 }
 
 export default async function handler(req, res) {
     try {
-        const database = await connectToDatabase();
-        const collection = database.collection('inventario'); // Specify the collection
+        // Wait for the client to connect
+        await clientPromise;
 
-        console.log('Fetching data from MongoDB...');
-        const results = await collection.find({}).toArray();
+        console.log("Connected to MongoDB!");
 
-        res.status(200).json(results); // Send the data as a response
+        // Access the database and collection
+        const database = client.db(process.env.DB_NAME);
+        const collection = database.collection('inventario');
+
+        // Fetch documents from the collection
+        const documents = await collection.find({}).toArray();
+        console.log("Documents fetched:", documents);
+
+        // Send the fetched documents as the response
+        res.status(200).json(documents);
+
     } catch (error) {
-        console.error('Error occurred:', error);
+        console.error("Error connecting to MongoDB:", error);
         res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 }
