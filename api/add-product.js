@@ -40,9 +40,10 @@ export default async function handler(req, res) {
                 precio: parseFloat(productPrice),
             });
 
-            res.status(200).json({ 
+            res.status(200).json({
                 message: 'Product added successfully',
-                id: result.insertedId
+                id: result.insertedId, // ID of the newly inserted product
+                autoIncrementId: nextId,
             });
         } catch (error) {
             console.error('Database insert error:', error);
