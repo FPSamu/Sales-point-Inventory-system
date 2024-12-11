@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
             // Select database and collection
             const database = client.db(process.env.DB_NAME_MONGO);
-            const collection = database.collection('inventario');
+            const inventarioCollection = database.collection('inventario');
             const countersCollection = database.collection('counters');
 
             const counterResult = await countersCollection.findOneAndUpdate(
