@@ -22,9 +22,19 @@ export default async function handler(req, res) {
             // Select database and collection
             const database = client.db(process.env.DB_NAME_MONGO);
             const collection = database.collection('inventario');
+            const countersCollection = database.collection('counters');
+
+            const counterResult = await countersCollection.findOneAndUpdate(
+                { _id: 'productId' }, // Search for the counter document
+                { $inc: { seq: 1 } }, // Increment sequence
+                { returnDocument: 'after', upsert: true } // Ensure it inserts if not found
+            );
+
+            const nextId = counterResult.value.seq; // Extract the incremented value
 
             // Insert the new product into MongoDB
-            const result = await collection.insertOne({
+            const result = await inventarioCollection.insertOne({
+                id: nextId, // Auto-incremented ID
                 nombre_producto: productName,
                 cantidad: parseInt(productQuantity),
                 precio: parseFloat(productPrice),

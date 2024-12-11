@@ -155,3 +155,101 @@ function closePopup() {
     document.getElementById("popup").style.display = "none";
     window.location.reload();
 }
+
+// Add Product Button
+document.getElementById("addProductButton").addEventListener("click", function () {
+    showPopup("Añadir producto", "add");
+});
+
+// Edit Product Button
+document.getElementById("editProductButton").addEventListener("click", function () {
+    showPopup("Editar producto", "edit");
+});
+
+// Remove Product Button
+document.getElementById("removeProductButton").addEventListener("click", function () {
+    showPopup("Eliminar producto", "remove");
+});
+
+// Search Product Button
+document.getElementById("searchProductButton").addEventListener("click", function () {
+    showPopup("Buscar producto", "search");
+});
+
+document.getElementById("editProductId").addEventListener("input", function () {
+    const productId = this.value;
+
+    if (!productId) {
+        clearEditFields();
+        return;
+    }
+
+    fetch(`/api/get-product?id=${productId}`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Product not found");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            document.getElementById("editProductName").value = data.nombre_producto || "";
+            document.getElementById("editProductPrice").value = data.precio || "";
+            document.getElementById("editProductQuantity").value = data.cantidad || "";
+        })
+        .catch((error) => {
+            console.error("Error fetching product:", error);
+            alert("Producto no encontrado");
+            clearEditFields();
+        });
+});
+
+
+// Function to show the popup and toggle between forms
+function showPopup(title, formType) {
+    clearEditFields();
+    document.getElementById("popupTitle").innerText = title;
+
+    // Toggle forms based on the type
+    if (formType === "add") {
+        document.getElementById("addProductForm").style.display = "block";
+        document.getElementById("editProductForm").style.display = "none";
+        document.getElementById("removeProductForm").style.display = "none";
+        document.getElementById("searchProductForm").style.display = "none";
+    } else if (formType === "edit") {
+        document.getElementById("addProductForm").style.display = "none";
+        document.getElementById("editProductForm").style.display = "block";
+        document.getElementById("removeProductForm").style.display = "none";
+        document.getElementById("searchProductForm").style.display = "none";
+    } else if (formType === "remove") {
+        document.getElementById("addProductForm").style.display = "none";
+        document.getElementById("editProductForm").style.display = "none";
+        document.getElementById("removeProductForm").style.display = "block";
+        document.getElementById("searchProductForm").style.display = "none";
+    } else if (formType === "search") {
+        document.getElementById("addProductForm").style.display = "none";
+        document.getElementById("editProductForm").style.display = "none";
+        document.getElementById("removeProductForm").style.display = "none";
+        document.getElementById("searchProductForm").style.display = "block";
+    }
+
+    // Display the popup
+    document.getElementById("popup").style.display = "flex";
+}
+
+// Close the popup when the close image is clicked
+document.getElementById("closeImage").addEventListener("click", function () {
+    closePopup();
+});
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("addProductForm").style.display = "none";
+    document.getElementById("editProductForm").style.display = "none";
+    window.location.reload();
+}
+
+function clearEditFields() {
+    document.getElementById("editProductName").value = "";
+    document.getElementById("editProductPrice").value = "";
+    document.getElementById("editProductQuantity").value = "";
+}
