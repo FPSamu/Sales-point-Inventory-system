@@ -1,3 +1,4 @@
+import { parse } from 'dotenv';
 import { MongoClient, ObjectId } from 'mongodb';
 
 const client = new MongoClient(process.env.MONGO_URI);
@@ -28,7 +29,7 @@ export default async function handler(req, res) {
             const collection = database.collection('inventario');
 
             // Query the database for the given ID
-            const result = await collection.findOne({ id: new ObjectId(id) });
+            const result = await collection.findOne({ id: parseInt(id, 10) });
 
             if (!result) {
                 res.status(404).json({ error: "Product not found" });
