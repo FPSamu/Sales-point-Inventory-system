@@ -195,7 +195,6 @@ document.getElementById("editProductId").addEventListener("input", function () {
         })
         .catch((error) => {
             console.error("Error fetching product:", error);
-            alert("Producto no encontrado");
             clearEditFields();
         });
 });
