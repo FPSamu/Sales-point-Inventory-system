@@ -15,11 +15,6 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
         const { id } = req.query;
 
-        if (!id) {
-            res.status(400).json({ error: "Product ID is required" });
-            return;
-        }
-
         try {
             // Connect to MongoDB Atlas
             await client.connect();

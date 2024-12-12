@@ -186,9 +186,6 @@ document.getElementById("editProductId").addEventListener("input", function () {
 
     fetch(`/api/get-product?id=${productId}`)
         .then((response) => {
-            if (!response.ok) {
-                throw new Error("Product not found");
-            }
             return response.json();
         })
         .then((data) => {
