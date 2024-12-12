@@ -28,7 +28,7 @@ export default async function handler(req, res) {
             const collection = database.collection('inventario');
 
             // Query the database for the given ID
-            const result = await collection.findOne({ _id: new ObjectId(id) });
+            const result = await collection.findOne({ id: new ObjectId(id) });
 
             if (!result) {
                 res.status(404).json({ error: "Product not found" });
